@@ -5,13 +5,19 @@
   <div class="w-full dark:bg-gray-800 p-0 relative overflow-hidden h-screen">
     <div
       class="w-full h-full p-2 flex flex-row gap-6"
-      style="
-        background-image: url(&quot;/bg.webp&quot;);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center bottom;
-      "
     >
+      <div
+    class="absolute inset-0 -z-10"
+    style="
+      background-image: url('/bg9.webp');
+      background-size: contain;
+      background-position: 20%;
+      background-repeat: no-repeat;
+      transform: rotate(-deg);
+      transform-origin: center;
+    "
+  ></div>
+
       {{ template "layout/changelanuge.html" .}}
     </div>
 
