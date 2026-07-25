@@ -1,0 +1,105 @@
+/*@media screen and (max-width: 1439px) {*/
+@media screen and (max-width: 1900px) {
+	:root {
+
+		--sizeTitleFont: 2rem;
+		--sizeNormalFont: 14px;
+
+		--colorHomeItem: #ffffff;
+		--border: 1px solid rgb(75, 75, 75);
+		--borderRadius: 0px;
+		/* --colorBackground: #DDDDD5; */
+		--colorImage: rgb(237, 237, 237);
+		--colorDate: rgb(214, 214, 214);
+		--colorDesc: rgb(180, 180, 180);
+		--colorPs: rgb(255, 255, 255);
+		/* --headerWidth:  */
+		--fontSize: 14px;
+		--fontFamily: Arial, Helvetica, sans-serif;
+		--homeWidth: 100vw;
+		--scrollbarWidth: 0px;
+		--mobileWidth: 393px;
+		--headerHeight: 100px;
+		--footerHeight: 4rem;
+		--mainHeight: calc(100vh - var(--headerHeight) - var(--footerHeight));
+		--borderStyle: 1px solid var(--colorBorderStyle);
+	}
+
+	.table-of-contents {
+		display: none;
+	}
+
+}
+
+@media screen and (max-width: 780px) {
+
+	.home-page-content,
+	.home-item {
+		width: 100%;
+	}
+
+	.home-vertical,
+	.home-horizontal {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+
+	}
+
+	.home-vertical .home-image img,
+	.home-horizontal .home-image img {
+		width: 100%
+			/* width: 100%;
+		height:300px; */
+	}
+
+	.home-vertical-detail {
+		width: 100%;
+	}
+
+
+
+	.home-item-box {
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.home-item-img {
+		overflow: hidden;
+		width: calc(100% - 8px);
+		/* 减去左右两边的外边距 */
+		margin: 4px;
+		padding-bottom: 6rem;
+		display: flex;
+		justify-content: center;
+		position: relative;
+	}
+
+
+
+	section {
+		width: 100%;
+		font-size: 150%;
+	}
+
+	section img {
+		width: 100%;
+	}
+
+	p {
+		line-height: 275%;
+	}
+
+	/* 在屏幕宽度小于1440px时应用的样式 */
+	.table-of-contents {
+		display: none;
+	}
+
+	.category-box {
+		width: 95%;
+		margin: 2.5%;
+		border: var(--borderStyle);
+	}
+
+}

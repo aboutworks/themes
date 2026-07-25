@@ -1,0 +1,65 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    {{ if .IsHome }}
+      {{ .Site.Title }} | {{ .Site.Params.slogan }}
+    {{ else }}
+      {{ .Title }} | {{ .Site.Title }}
+    {{ end }}
+  </title>
+
+  <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description | plainify | truncate 256 }}{{ else }}{{ .Description | default .Summary | plainify | truncate 256 }}{{ end }}">
+  <meta name="keywords" content="{{ if .IsHome }}{{ with .Site.Params.keywords }}{{ delimit . ", " }}{{ end }}{{ else }}{{ with .Params.keywords }}{{ delimit . ", " }}{{ end }}{{ end }}">
+  <meta name="author" content="{{ .Site.Params.author }}">
+  {{ with .Params.tags }}
+    <meta property="article:tag" content="{{ delimit . ", " }}">
+  {{ end }}
+
+  <!-- CSS -->
+  {{ $styles := resources.Get "css/default.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
+
+  <!-- {{ $markdownLight := resources.Get "css/markdown/github-markdown-light.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $markdownLight.RelPermalink }}"> -->
+
+  {{ $markdownDark := resources.Get "css/markdown/github-markdown-dark.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $markdownDark.RelPermalink }}">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Tailwind Config -->
+  <!-- 2. 再配置 tailwind.config（darkMode 放外层） -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // 关键，必须在这
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2D3142",
+            secondary: "#EF8354",
+            neutral: "#F2F4F3",
+            accent: "#4F5D75",
+          },
+          fontFamily: {
+            inter: ["Inter", "system-ui", "sans-serif"],
+          },
+        },
+      }
+    }
+  </script>
+
+  <!-- JS -->
+  {{ $script := resources.Get "javascript/comments.js" | minify | fingerprint }}
+  <script src="{{ $script.RelPermalink }}" defer></script>
+
+  {{ $main := resources.Get "javascript/main.js" | minify | fingerprint }}
+  <script src="{{ $main.RelPermalink }}" defer></script>
+
+  {{ $handle := resources.Get "javascript/handle.js" | minify | fingerprint }}
+  <script src="{{ $handle.RelPermalink }}" defer></script>
+</head>

@@ -1,0 +1,165 @@
+<!-- 左侧目录 -->
+<div id="table-of-contents" class="table-of-contents" >
+  <!-- <div id="toc-close" class="blog-tag">关闭目录</div> -->
+    <!-- <h1 >
+          <i>{{ T "catalog" }}</i>
+        </h1>-->
+    <nav>
+      {{ .TableOfContents }}
+    </nav>
+  </div>
+<!-- 
+<div id="toc-toggle" class="toc-toggle blog-tag">开启目录</div>
+-->
+
+<script>
+  const tocAside = document.getElementById("table-of-contents");
+  const tocToggle = document.getElementById("toc-toggle");
+  const tocClose = document.getElementById("toc-close");
+
+  tocToggle.addEventListener("click", () => {
+    tocAside.style.display = "block";
+    tocToggle.style.display = "none";
+  });
+
+  tocClose.addEventListener("click", () => {
+    tocAside.style.display = "none";
+    tocToggle.style.display = "block";
+  });
+
+
+  function toggleTOC() {
+    const tocNav = document.getElementById('toc-nav');
+    const icon = document.getElementById('toc-toggle-icon');
+    const isVisible = tocNav.style.display === 'block';
+
+    if (isVisible) {
+      tocNav.style.display = 'none';
+      icon.textContent = '▶'; // 折叠箭头
+    } else {
+      tocNav.style.display = 'block';
+      icon.textContent = '▼'; // 展开箭头
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const tocNav = document.getElementById('toc-nav');
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      tocNav.style.display = 'block';
+      document.getElementById('toc-toggle-icon').textContent = '▼';
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const toc = document.getElementById('TableOfContents');
+
+    if (!toc) return;
+
+    const items = toc.querySelectorAll('li:has(> ul)');
+    items.forEach(li => {
+      const anchor = li.children[0]; // a 标签
+      const subMenu = li.querySelector('ul');
+
+      // 默认展开子菜单
+      subMenu.style.display = 'block';
+      // subMenu.style.marginLeft = '1.5rem';
+
+      // 创建展开/收起图标，作为 li 的第一个子元素
+      const toggleIcon = document.createElement('span');
+      toggleIcon.textContent = '▼';
+      toggleIcon.className = 'toggle-icon';
+      // toggleIcon.style.marginRight = '0.5em';
+      toggleIcon.style.cursor = 'pointer';
+      toggleIcon.style.userSelect = 'none';
+      toggleIcon.style.color = '#888';
+      toggleIcon.style.display = 'inline-block';
+
+      // 插入到 a 标签前面
+      li.insertBefore(toggleIcon, anchor);
+
+      // 点击图标切换子菜单
+      toggleIcon.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const isVisible = subMenu.style.display === 'block';
+        subMenu.style.display = isVisible ? 'none' : 'block';
+        toggleIcon.textContent = isVisible ? '▶' : '▼';
+      });
+
+      // 点击链接时允许跳转，不触发折叠/展开
+      anchor.addEventListener('click', function (e) {
+        // 这里可以什么都不做，让浏览器自己处理跳转
+      });
+    });
+  });
+</script>
+<!-- <style>
+  .table-of-contents {
+    padding: 1rem;
+    border-left: 2px solid #42b983;
+    margin-bottom: 2rem;
+    position: fixed;
+    background-color: white;
+    top: var(--height-header);
+    right: 0;
+    height: var(--height-main);
+    overflow-y: auto;
+  }
+  .toc-toggle{
+    position: fixed;
+    bottom:3rem;
+    right: 3rem;
+  }
+
+  .table-of-contents h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    cursor: pointer;
+  }
+
+  #toc-toggle-icon {
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .toc-content ul {
+    padding-left: 1rem;
+    list-style-type: none;
+  }
+
+  .toc-content li {
+    margin: 0.3rem 0;
+  }
+
+  .toc-content a:hover {
+    text-decoration: underline;
+  }
+
+
+  .toc-content>ul>li {
+    padding-left: 0;
+  }
+
+  .toc-content ul ul>li {
+    padding-left: 1rem;
+  }
+
+  .toc-content ul ul ul>li {
+    padding-left: 2rem;
+  }
+
+  .toc-content ul ul ul {
+    display: none;
+  }
+
+  .toc-content ul ul ul ul:hover {
+    display: block;
+  }
+
+  @media (max-width: 1200px) {
+    .toc-content {
+      display: none;
+    }
+  }
+</style> -->
