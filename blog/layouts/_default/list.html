@@ -1,10 +1,5 @@
-{{ define "main" }}
-{{ template "layout/header.html" . }}
-<main>
-  <h1>{{ .Title }}</h1>
-  {{ range .Pages }}
-    <a href="{{ .Permalink }}">{{ .Title }}</a>
-  {{ end }}
+{{ define "main" }} {{ template "layout/header.html" . }}
+<main class="p-6">
+  {{ template "home/protect.html" . }} {{template "home/hot.html" . }}
 </main>
-{{ template "layout/footer.html" . }}
-{{ end }}
+{{ template "layout/footer.html" . }} {{ end }}

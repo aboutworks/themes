@@ -56,13 +56,13 @@
 </header>
 
 <!-- 侧边栏  -->
-{{ template "aside.html" . }}
+{{ template "layout/aside.html" . }}
 
 <!-- 搜索 -->
-{{ template "search.html" . }}
+{{ partial "search.html" . }}
 
 <!-- 设置-->
-{{ template "setting.html" . }}
+{{ partial "settings.html" . }}
 
 
 <script>

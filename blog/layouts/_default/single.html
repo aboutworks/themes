@@ -1,0 +1,16 @@
+{{ define "main" }} 
+{{template "layout/header.html" . }}
+
+{{ partial "breadcrumb.html" . }}
+
+{{ $ptype := default .Type .Params.type }}
+{{ if eq $ptype "article" }}
+{{ template "single/ariticle.html" . }}
+{{ else if eq $ptype "assets" }}
+{{ template "single/assets.html" . }}
+{{ else }}
+{{/* 默认渲染为文章模板，避免因 frontmatter 缺少 type 导致空白 */}}
+{{ template "single/ariticle.html" . }}
+{{ end }}
+
+{{ template "layout/footer.html" . }} {{ end }}

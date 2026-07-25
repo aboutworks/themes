@@ -1,5 +1,6 @@
+<!-- 热门文章列表 -->
 <div
-  class="mb-4 mt-4 bg-[#f2f2f2] p-4 border border-[#ededed] rounded-xl dark:bg-[#0d1a28] dark:border-zinc-800"
+  class="mb-8"
   data-doubao-line="271"
   data-doubao-column="9"
   data-doubao-key="111"
@@ -17,7 +18,7 @@
       data-doubao-column="17"
       data-doubao-key="113"
     >
-      授权文章
+      最新文章
     </h2> -->
     <div
       class="flex items-center space-x-2 aos-init aos-animate"
@@ -26,6 +27,13 @@
       data-doubao-column="17"
       data-doubao-key="114"
     >
+      <button
+        class="view-toggle active p-2 rounded-md hover:bg-gray-100 transition-colors"
+        data-view="card"
+        data-doubao-line="275"
+        data-doubao-column="21"
+        data-doubao-key="115"
+      >
         <i
           class="fa fa-th-large text-gray-600"
           data-doubao-line="276"
@@ -51,24 +59,23 @@
   </div>
 
   <!-- 文章卡片网格 -->
-  <!-- <div id="articles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-doubao-line="285"
-    data-doubao-column="13" data-doubao-key="119"> -->
-<div
+  <div
     id="articles-container"
-    class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
     data-doubao-line="285"
     data-doubao-column="13"
     data-doubao-key="119"
->
+  >
     <!-- 文章卡片将通过JavaScript动态生成 -->
 
     {{ range sort (where (where .Site.RegularPages "Section" "posts")
-    "Params.categories" "intersect" (slice "授权")) ".Params.index" "asc" }} {{
-    if eq .Params.position "home" }} {{ $context := dict "Title" .Title "Uuid"
-    .Params.uuid "Tags" .Params.tags "Position" .Params.position "Sitetitle"
-    .Site.Title "Permalink" .Permalink "Date" .Date "Type" .Params.type "Image"
-    .Params.image "YouTube" .Params.youtube "Bilibili" .Params.bilibili "Desc"
-    .Params.description "Weight" .Params.weight "Index" .Params.index }} {{
-    template "blog-item-pic.html" $context }} {{ end }} {{ end }}
+    "Params.position" "eq" "home") ".Params.weight" "asc" }} {{ if not (or (in
+    .Params.categories "授权") (in .Params.categories "资源")) }} {{ $context :=
+    dict "Title" .Title "Uuid" .Params.uuid "Tags" .Params.tags "Position"
+    .Params.position "Sitetitle" .Site.Title "Permalink" .Permalink "Date" .Date
+    "Type" .Params.type "Image" .Params.image "YouTube" .Params.youtube
+    "Bilibili" .Params.bilibili "Desc" .Params.description "Weight"
+    .Params.weight }} {{ template "home/item.html" $context }} {{ end }} {{ end
+    }}
   </div>
 </div>

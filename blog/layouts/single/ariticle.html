@@ -120,13 +120,13 @@
       ></path>
     </svg>
   </button>
-  <div id="protect-article">{{ template "post-content.html" . }}</div>
+  <div id="protect-article">{{ template "single/content.html" . }}</div>
 </div>
 
 {{ else }}
 
 <!-- 不受保护的内容 -->
-<div>{{ template "post-content.html" . }}</div>
+<div>{{ template "single/content.html" . }}</div>
 
 {{ end }}
 
