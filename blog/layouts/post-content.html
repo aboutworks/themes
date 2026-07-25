@@ -61,19 +61,19 @@
       id="article-content"
       class="dark:text-gray-200 markdown-body markdown-content reading-container prose prose-lg max-w-none font-sans text-primary leading-relaxed transition-colors duration-300"
     >
-      {{/* 目录 (可选) */}} {{ if eq .Params.toc "true" }} {{ partial "toc.html"
+      {{/* 目录 (可选) */}} {{ if eq .Params.toc "true" }} {{ template "toc.html"
       . }} {{ end }} {{ .Content }}
     </article>
   </div>
   <!-- ↑↑↑ 粘贴结束 ↑↑↑ -->
   <!-- 标签与评论 -->
   <div class="mb-6 bg-custom-bg-color p-8 rounded-2xl shadow-lg" >
-    {{ partial "taxonomy-tags.html" . }} 
+    {{ template "taxonomy-tags.html" . }} 
   </div>
     
   <div class="mb-6 bg-custom-bg-color p-8 rounded-2xl shadow-lg" >
     
-    {{ partial "comments.html" (dict "uuid"
+    {{ partials "comments.html" (dict "uuid"
     .Params.uuid "Sitetitle" .Site.Title) }}
   </div>
 </div>

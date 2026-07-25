@@ -1,0 +1,15 @@
+{{template "header.html" . }}
+
+{{ template "breadcrumb.html" . }}
+
+{{ $ptype := default .Type .Params.type }}
+{{ if eq $ptype "article" }}
+{{ template "page-ariticle.html" . }}
+{{ else if eq $ptype "assets" }}
+{{ template "page-assets.html" . }}
+{{ else }}
+{{/* 默认渲染为文章模板，避免因 frontmatter 缺少 type 导致空白 */}}
+{{ template "page-ariticle.html" . }}
+{{ end }}
+
+{{ template "footer.html" . }}

@@ -1,4 +1,4 @@
-{{ partial "blog/header.html" . }}
+{{ template "header.html" . }}
 
 <main class="container mx-auto px-4">
   <div class="debug">
@@ -19,7 +19,7 @@
     {{$webtype}}
   </div>
 
-  {{ partial "blog/page-categories.html" . }}
+  {{ template "page-categories.html" . }}
 </main>
 
-{{ partial "blog/footer.html" . }}
+{{ template "footer.html" . }}

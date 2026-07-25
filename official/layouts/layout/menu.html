@@ -1,12 +1,12 @@
 <div class="fixed top-4 right-4 z-50 flex items-center gap-3">
   <span class="w-8 h-8 flex items-center justify-center">
-    {{ template "official/icon/signin.html" . }}
+    {{ template "icon/signin.html" . }}
   </span>
   <span class="w-8 h-8 flex items-center justify-center">
-    {{ template "official/icon/signup.html" . }}
+    {{ template "icon/signup.html" . }}
   </span>
   <span class="w-8 h-8 flex items-center justify-center  md:hidden">
-    {{ template "official/icon/switch.html" . }}
+    {{ template "icon/switch.html" . }}
   </span>
 </div>
 <!-- 菜单开关 -->
@@ -19,7 +19,7 @@
 
 
 
-{{ template "official/icon/logo.html" . }}
+{{ template "icon/logo.html" . }}
   <div
     class="nav-menu flex flex-col gap-3 items-end font-['initial',_'Futura',_sans-serif]"
   >
@@ -27,7 +27,7 @@
 
 
 
-    {{ range .Site.Menus.official.ByWeight }}
+    {{ range .Site.Menus.main.ByWeight }}
     <a
       href="{{ .URL }}"
       class="text-gray-400 text-xs font-light tracking-[2px] uppercase transition-all hover:text-gray-900 font-medium hover:translate-x-1 transform block"
@@ -38,5 +38,5 @@
   </div>
 
   <!-- 底部社交 -->
-  <div class="mt-auto pt-8">{{ template "official/layout/social.html" . }}</div>
+  <div class="mt-auto pt-8">{{ template "layout/social.html" . }}</div>
 </div>

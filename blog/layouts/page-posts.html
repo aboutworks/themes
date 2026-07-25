@@ -9,7 +9,7 @@
 	<div class="home-item">
 		{{ if eq .Params.position "top" }}
 		{{ if eq .Params.arrange "vertical" }}
-		{{ partial "vertical.html"
+		{{ template "vertical.html"
 		(
 		dict
 		"Title" .Title
@@ -24,7 +24,7 @@
 		"desc" .Params.desc
 		)}}
 		{{ else if eq .Params.arrange "horizontal" }}
-		{{ partial "horizontal.html"
+		{{ template "horizontal.html"
 		(
 		dict
 		"Title" .Title
@@ -49,7 +49,7 @@
 	<div class="home-item">
 		{{ if eq .Params.position "normal" }}
 		{{ if eq .Params.arrange "vertical" }}
-		{{ partial "vertical.html"
+		{{ template "vertical.html"
 		(
 		dict
 		"Title" .Title
@@ -63,7 +63,7 @@
 		"desc" .Params.desc
 		)}}
 		{{ else if eq .Params.arrange "horizontal" }}
-		{{ partial "horizontal.html"
+		{{ template "horizontal.html"
 		(
 		dict
 		"Title" .Title
