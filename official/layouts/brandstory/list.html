@@ -11,7 +11,7 @@
   <!-- 全局背景层（最底层） -->
   <div id="bg-layer" class="fixed inset-0 z-0 opacity-0 transition-opacity duration-1000 bg-cover bg-center">
     <!-- 渐变遮罩 深浅双模式适配 -->
-    <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/40 to-transparent dark:from-black/90 dark:via-black/40 dark:to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/20 to-white/90 dark:from-black/90 dark:via-black/20 dark:to-black/90"></div>
   </div>
 
   <!-- 左侧：时间线列表区域 -->
@@ -23,34 +23,27 @@
 
       <!-- 竖向时间线容器 -->
       <div class="relative border-l border-gray-800 dark:border-gray-600 ml-2 space-y-24 flex-1 overflow-y-auto pr-4">
-        {{/* 可替换为Hugo菜单循环：{{ range .Site.Menus.heritage.ByWeight }} */}}
-        <!-- 时间线节点 -->
-        <div class="group cursor-pointer ml-6 relative">
-          <!-- 时间圆点 -->
-         <span class="absolute -left-[29px] top-1 w-2.5 h-2.5 bg-gray-700 dark:bg-gray-500 rounded-full group-hover:bg-amber-500 transition-colors duration-300"></span>
-          
-          <h3 class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3">
-            2026 - Present
-          </h3>
-          
-          <p class="time-list-item text-[11px] leading-loose text-gray-800 dark:text-gray-200 font-light tracking-wide transition-all duration-300 ease-out">
-            将AI与3D数字孪生技术引入传统木雕。在屏幕与木质纹理的博弈间，重构古老工艺的灵魂。
-          </p>
-        </div>
-
-        <div class="group cursor-pointer ml-6 relative">
-        <span class="absolute -left-[29px] top-1 w-2.5 h-2.5 bg-gray-700 dark:bg-gray-500 rounded-full group-hover:bg-amber-500 transition-colors duration-300"></span>
-          <h3 class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3">
-            2026 - Present
-          </h3>
-          <p class="time-list-item text-[11px] leading-loose text-gray-800 dark:text-gray-200 font-light tracking-wide transition-all duration-300 ease-out">
-            将AI与3D数字孪生技术引入传统木雕。在屏幕与木质纹理的博弈间，重构古老工艺的灵魂。
-          </p>
-        </div>
-
-
-
         
+        {{/* 带索引遍历时间线数组，$index=下标  $item=单条数据 */}}
+        {{ range $index, $item := .Params.timeline_list }}
+        <div 
+          class="group cursor-pointer ml-6 relative mb-8 last:mb-0"
+          data-bg="{{ $item.image }}"
+        >
+          <!-- 时间轴线圆点 hover变色 -->
+          <span class="absolute -left-[29px] top-1 w-2.5 h-2.5 bg-gray-700 dark:bg-gray-500 rounded-full group-hover:bg-amber-500 transition-colors duration-300"></span>
+          
+          <!-- 时间段文本 -->
+          <!-- <h3 class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3"> {{ $item.period }} </h3> -->
+          <h3 class="text-[10px] font-bold uppercase tracking-widest  mb-1"> {{ $item.period }} </h3>
+          
+          <!-- 介绍文案 -->
+          <p class="time-list-item text-[11px] leading-loose text-gray-800 dark:text-gray-200 font-light tracking-wide transition-all duration-300 ease-out">
+            {{ $item.content }}
+          </p>
+        </div>
+        {{ end }}
+
       </div>
     </div>
   </div>
@@ -78,18 +71,10 @@
   };
 
   // 绑定整组hover事件
-  timeGroups.forEach((group, index) => {
+  timeGroups.forEach((group) => {
     const item = group.querySelector(".time-list-item");
-    // 自定义每张节点对应背景图
-    const bgImgList = [
-      'https://picsum.photos/1920/1080?1',
-      'https://picsum.photos/1920/1080?2',
-      'https://picsum.photos/1920/1080?3',
-      'https://picsum.photos/1920/1080?4',
-      'https://picsum.photos/1920/1080?5',
-      'https://picsum.photos/1920/1080?6',
-      'https://picsum.photos/1920/1080?7',
-    ];
+    // 从当前DOM节点读取MD里写入的背景图地址
+    const bgImage = group.dataset.bg;
 
     group.addEventListener("mouseenter", () => {
       // 右侧面板右滑
@@ -97,7 +82,7 @@
       // 激活样式类
       item.classList.add("timeline-item-active");
       // 切换对应背景图
-      showBg(bgImgList[index]);
+      showBg(bgImage);
     });
 
     group.addEventListener("mouseleave", () => {
