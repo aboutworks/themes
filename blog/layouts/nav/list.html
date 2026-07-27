@@ -1,0 +1,60 @@
+{{ define "main" }}
+{{ template "layout/header.html" . }}
+
+<div class="max-w-5xl mx-auto px-4 py-10">
+
+  <!-- 标题区域 -->
+  <div class="text-center mb-10">
+    <h1 class="text-3xl font-bold mb-2">{{ .Title }}</h1>
+    <p class="text-gray-500 dark:text-gray-400">收录常用站点，支持关键词实时搜索</p>
+  </div>
+
+  <!-- 搜索框 -->
+  <div class="mb-12">
+    <input
+      id="search"
+      type="text"
+      placeholder="搜索名称、标签…"
+      class="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 focus:border-transparent"
+    >
+  </div>
+
+  <!-- 链接列表 -->
+  <div class="space-y-12">
+    {{ range .Params.links }}
+    <section>
+      <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{{ .category }}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {{ range .items }}
+        <a
+          href="{{ .url }}"
+          target="_blank"
+          data-name="{{ lower .name }}"
+          data-tags="{{ delimit (apply .tags "lower" ".") " " }}"
+          class="flex items-center justify-center px-4 py-5 rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:border-indigo-200 dark:hover:border-indigo-700 hover:-translate-y-0.5 transition-all"
+        >
+          {{ .name }}
+        </a>
+        {{ end }}
+      </div>
+    </section>
+    {{ end }}
+  </div>
+
+</div>
+
+{{ template "layout/footer.html" . }}
+<script>
+const input = document.getElementById('search')
+const cards = document.querySelectorAll('.card')
+
+input.addEventListener('input', () => {
+  const q = input.value.toLowerCase()
+  cards.forEach(c => {
+    const name = c.dataset.name
+    const tags = c.dataset.tags
+    c.style.display = name.includes(q) || tags.includes(q) ? 'block' : 'none'
+  })
+})
+</script>
+{{ end }}
