@@ -14,7 +14,7 @@ class="w-full flex-1 dark:bg-gray-800 p-6 pt-24 md:p-12 md:pr-[330px] pt-24 rela
       </div>
 
       <!-- 联系表单 -->
-      <form class="space-y-5">
+      <form id="contactForm" class="space-y-5">
         <!-- 1. 联系人姓名 -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -70,6 +70,20 @@ class="w-full flex-1 dark:bg-gray-800 p-6 pt-24 md:p-12 md:pr-[330px] pt-24 rela
           ></textarea>
         </div>
 
+        <!-- 👇 验证码模块 -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">验证码</label>
+          <div class="flex gap-3">
+            <input
+              type="text"
+              id="codeInput"
+              placeholder="请输入验证码"
+              class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-500 dark:focus:ring-white/60 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
+            />
+            <canvas id="captchaCanvas" class="w-[120px] h-[50px] rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer"></canvas>
+          </div>
+        </div>
+
         <!-- 提交按钮 -->
         <button
           type="submit"
@@ -80,10 +94,75 @@ class="w-full flex-1 dark:bg-gray-800 p-6 pt-24 md:p-12 md:pr-[330px] pt-24 rela
       </form>
     </div>
 
-
-
   {{ template "layout/menu.html" .}}
-
   </section>
 
+<script>
+// ========== 纯前端 Canvas 验证码 ==========
+const canvas = document.getElementById('captchaCanvas');
+const ctx = canvas.getContext('2d');
+const form = document.getElementById('contactForm');
+const codeInput = document.getElementById('codeInput');
+
+let currentCode = '';
+
+// 生成随机验证码
+function generateCode() {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  currentCode = code;
+  drawCode(code);
+}
+
+// 绘制到画布
+function drawCode(code) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.font = 'bold 26px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  // 干扰线
+  for (let i = 0; i < 4; i++) {
+    ctx.strokeStyle = randomColor();
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.stroke();
+  }
+
+  // 文字
+  for (let i = 0; i < code.length; i++) {
+    ctx.fillStyle = randomColor();
+    ctx.fillText(code[i], 25 + i * 25, canvas.height / 2);
+  }
+}
+
+function randomColor() {
+  const r = Math.floor(Math.random() * 100);
+  const g = Math.floor(Math.random() * 100);
+  const b = Math.floor(Math.random() * 100);
+  return `rgb(${r},${g},${b})`;
+}
+
+// 点击刷新
+canvas.addEventListener('click', generateCode);
+
+// 表单提交校验
+form.addEventListener('submit', function (e) {
+  const val = codeInput.value.trim().toUpperCase();
+  if (val !== currentCode) {
+    e.preventDefault();
+    alert('验证码不正确');
+    generateCode();
+    codeInput.value = '';
+    codeInput.focus();
+  }
+});
+
+// 初始化
+generateCode();
+</script>
 {{ end }}
