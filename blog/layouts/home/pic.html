@@ -1,79 +1,103 @@
 <div
-  class="flex flex-row bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+  class="card card-hover group transition-all duration-200 rounded-lg overflow-hidden bg-white border-gray-200 dark:bg-gray-800 shadow-sm h-full flex flex-col border border-gray-100"
 >
-  <!-- 左侧：1:1 书籍封面 → 手机隐藏，电脑显示 -->
-  <div class="w-48 aspect-square shrink-0 hidden md:block">
-    <a href="{{.Permalink }}" class="block w-full h-full">
+  <a class="block flex flex-col h-full" href="{{ .Permalink }}">
+    <div
+      class="relative aspect-[4/3] bg-gray-100 dark:bg-gray-700 rounded-t-lg overflow-hidden flex-shrink-0"
+    >
       <img
-        src="{{.Image}}"
-        alt="{{.Title }}"
-        class="w-full h-full object-cover"
+        alt="{{ .Title }}"
         loading="lazy"
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        src="{{ .Image }}"
+        onerror="this.style.display = 'none'"
       />
-    </a>
-  </div>
-
-  <!-- 右侧：内容区域 -->
-  <div class="flex-1 flex flex-col justify-between p-5">
-    <!-- 顶部：标题 + UUID -->
-    <div class="flex flex-col gap-2 mb-2">
-      <h3
-        class="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-        onclick="clickaddcount('{{ .Uuid }}')"
-      >
-        <a href="{{.Permalink }}">{{.Title }}</a>
-      </h3>
+      {{ if eq .Protect true }}
       <span
-        class="text-gray-900 dark:text-white text-xs px-2.5 py-1 rounded-full font-medium authid_uuid_{{ .Uuid }}"
+        class="absolute top-2 left-2 px-1 py-0 text-[10px] bg-yellow-200 dark:bg-gray-700/90 text-gray-700 dark:text-gray-300 rounded-full shadow-sm"
+      >需授权
+      </span>
+      {{ end }}
+
+      
+      {{ index .Tags 0 }}
+      </span>
+      <span
+        class="absolute bottom-2 left-2 px-2 py-0.5 text-[10px] font-medium bg-white/90 dark:bg-gray-700/90 text-gray-700 dark:text-gray-300 rounded-full shadow-sm"
+      >
+        {{ index .Tags 0 }}
+      </span>
+      <span
+        class="absolute top-2 right-2 px-1 py-0 text-[10px] font-medium bg-gray-500 text-white rounded-full"
       >
         {{ .Uuid }}
-        <i class="fa fa-fire ml-1"></i>
       </span>
-    </div>
-
-    <!-- 描述 -->
-    <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">
-      <!-- {{.Weight }},  -->
-      {{.Desc }}
-    </p>
-
-    <!-- 标签 -->
-    <div class="flex flex-wrap gap-2 mb-4">
-      {{ range.Tags }}
-      <span
-        class="px-4 py-0.5 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-300 rounded-full text-xs hover:bg-gray-200 dark:hover-bg-gray-600 transition-colors"
-        >{{ . }}</span
+      <div
+        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
       >
-      {{ end }}
-    </div>
-
-    <!-- 底部：作者 + 时间 + 阅读量 -->
-    <div
-      class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto"
-    >
-      <div class="flex items-center">
-        <img
-          src="posts/assets资产/Avatar.webp"
-          alt="黄一珈"
-          class="w-7 h-7 rounded-full object-cover mr-2 border border-gray-200 dark:border-gray-600"
-          loading="lazy"
-        />
-        <span class="text-sm text-gray-700 dark:text-gray-300 font-medium"
-          >黄一珈</span
+        <span class="text-white text-xs font-semibold tracking-wide uppercase"
+          >{{ i18n "view_details" }}</span
         >
       </div>
-      <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
-        <span class="mr-3"
-          ><i class="fa fa-calendar-o mr-1"></i>{{.Date.Format "2006-01-02 15:04:05" }}</span
+    </div>
+
+    <div class="p-3 flex-1 flex flex-col gap-1 overflow-hidden">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white truncate">
+        {{ .Title }}
+      </h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400">Jimmy Wong</p>
+
+      <div
+        class="flex items-center gap-1 flex-wrap flex-shrink-0 max-h-[20px] overflow-hidden"
+      >
+        {{ range .Tags }}
+        <span
+          class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-[10px]"
         >
-        <span>
-          <i class="fa fa-eye mr-1"></i>
-          <span id="eyescount_{{.Uuid}}">-</span>
+          {{ . }}
+        </span>
+        {{ end }}
+      </div>
+
+      <div class="text-[10px] text-gray-400 line-clamp-3">{{ .Desc }}</div>
+
+      <div
+        class="mt-auto flex items-center gap-3 font-mono text-[11px] text-gray-400 flex-shrink-0"
+      >
+        <span class="inline-flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+            ></path>
+          </svg>
+          {{ .Weight }}
+        </span>
+        <span class="inline-flex items-center gap-1">
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            ></path>
+          </svg>
+          <span id="eyescount_{{ .Uuid }}">-</span>
+        </span>
+        <span
+          class="ml-auto px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-[10px]"
+        >
+          {{ .Date.Format "2006-01-02" }}
         </span>
       </div>
     </div>
-  </div>
+  </a>
 </div>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     this.loadCount();

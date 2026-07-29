@@ -1,5 +1,7 @@
 {{ define "main" }} {{ template "layout/header.html" . }}
-<main class="max-w-6xl mx-auto p-6">
-  {{ template "home/protect.html" . }} {{template "home/hot.html" . }}
+{{ template "layout/filter.html" . }}
+<main>
+  {{ template "home/protect.html" . }}   
+  {{template "home/hot.html" . }}
 </main>
 {{ template "layout/footer.html" . }} {{ end }}
