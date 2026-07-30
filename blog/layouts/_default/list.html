@@ -1,7 +1,10 @@
 {{ define "main" }} {{ template "layout/header.html" . }}
-{{ template "layout/filter.html" . }}
+{{ partial "hero.html" .}}
+
 <main>
   {{ template "home/protect.html" . }}   
+  
+  {{ partial "banner.html" .}}
   {{template "home/hot.html" . }}
 </main>
 {{ template "layout/footer.html" . }} {{ end }}

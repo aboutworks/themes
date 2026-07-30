@@ -1,0 +1,29 @@
+{{/* Hero 首屏主视觉模块 Hugo Partial */}}
+<section class="hero-section py-16 md:py-24 px-6 bg-black dark: bg-white" style="display: none;">
+  <div class="max-w-5xl mx-auto text-center">
+    {{/* 主标题 */}}
+    <h1 class="text-[clamp(2rem,5vw,3.2rem)] font-semibold text-gray-900 mb-6">
+      {{ i18n "hero_title" }}
+    </h1>
+    {{/* 副标题描述 双语适配 */}}
+    <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+      {{ i18n "hero_desc" }}
+    </p>
+    {{/* 两个行动按钮：浏览作品 / 关于我 */}}
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="{{ .Site.BaseURL }}" class="px-7 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-700 transition-colors">
+        {{ i18n "btn_works" }}
+      </a>
+      <a href="{{ .Site.BaseURL }}about/" class="px-7 py-3 border border-gray-300 text-gray-800 rounded-md hover:bg-gray-50 transition-colors">
+        {{ i18n "btn_about" }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{{/* 内置极简Tailwind样式（无框架可直接删class替换原生CSS），你项目不用Tailwind我可以给纯CSS版本 */}}
+<style>
+.hero-section {
+  border-bottom: 1px solid #eee;
+}
+</style>

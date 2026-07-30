@@ -1,0 +1,11 @@
+{{/* 全站顶部通知 Banner - Tailwind 版本 */}}
+{{ if .Site.Params.banner.enable }}
+<div class="w-full py-2.5 px-4 text-sm text-center bg-slate-100 text-gray-700 border-b border-gray-200">
+  <span>{{ .Site.Params.banner.content }}</span>
+  {{ with .Site.Params.banner.link }}
+  <a href="{{ . }}" class="ml-2 underline hover:text-black">
+    {{ i18n "banner_more" }} →
+  </a>
+  {{ end }}
+</div>
+{{ end }}
