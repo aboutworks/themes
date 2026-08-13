@@ -21,8 +21,8 @@
   {{ $styles := resources.Get "css/default.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
 
-  <!-- {{ $markdownLight := resources.Get "css/markdown/github-markdown-light.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ $markdownLight.RelPermalink }}"> -->
+{{ $markdownLight := resources.Get "css/markdown/github-markdown-light.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $markdownLight.RelPermalink }}">
 
   {{ $markdownDark := resources.Get "css/markdown/github-markdown-dark.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $markdownDark.RelPermalink }}">
