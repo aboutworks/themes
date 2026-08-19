@@ -1,0 +1,239 @@
+{{ $sectionIndex := .Site.GetPage "section" "pages" }} {{
+$sectionIndex.Params.department }}
+
+<div class="doc-wrap" id="docRef">
+  <h2 style="text-align: center; font-size: 24px; margin-bottom: 16px">
+    資產保管切結書
+  </h2>
+  <table style="border-collapse: collapse; width: 100%">
+    <tbody>
+      <tr>
+        <td colspan="5" align="center"><strong>保管人資訊</strong></td>
+      </tr>
+      <tr>
+        <th>姓名</th>
+        <th>工號</th>
+        <th>郵箱</th>
+        <th>座機</th>
+        <th>手機</th>
+      </tr>
+      <tr>
+        <td>{{ $sectionIndex.Params.principal.name }}</td>
+        <td>{{ $sectionIndex.Params.principal.empId }}</td>
+        <td>{{ $sectionIndex.Params.principal.email }}</td>
+        <td>{{ $sectionIndex.Params.principal.telphone }}</td>
+        <td>{{ $sectionIndex.Params.principal.phone }}</td>
+      </tr>
+      <tr>
+        <td colspan="5" align="center"><strong>資產資訊</strong></td>
+      </tr>
+      <tr>
+        <th>序號</th>
+        <th>姓名/工號</th>
+        <th>型號</th>
+        <th>管制編號/SN</th>
+        <th>所屬法人</th>
+      </tr>
+
+      {{ range .Params.assignmentList }}
+      <tr>
+        <td>{{.id}}</td>
+        <td>{{.name}}/{{.empId}}</td>
+        <td>{{.model}}</td>
+        <td>{{.sn}}</td>
+        <td>{{ $sectionIndex.Params.department.legalentity }}</td>
+      </tr>
+      {{end}}
+    </tbody>
+    <tbody id="assetTbody"></tbody>
+    <tbody>
+      <tr id="emptyRow" style="display: none">
+        <td colspan="5" align="center">暫無資產資料</td>
+      </tr>
+      <tr>
+        <td colspan="5" align="center"><strong>保管事項</strong></td>
+      </tr>
+      <tr>
+        <td colspan="5" style="padding: 2rem">
+          <p>
+            1、保管人因工作需要使用公司（下稱“公司”）的上述資產，在使用期間保管人自願承擔對上述資產的保管義務，保管期限至公司收回該資產之日止。
+          </p>
+          <p>
+            2、保管人對上述資產僅享有非獨佔、不可轉讓的使用權，所有權等其他權利均屬於公司，在保管人離職、調崗或公司認為需收回的情況下公司有權收回上述資產，保管人需無條件在公司發出收回通知當日將上述資產交還公司。
+          </p>
+          <p>
+            3、保管人在保管上述資產期間需正常、合理使用上述資產，保證資產完好，充分發揮資產效用，若資產出現毀損，應按照相關規定上報處理，不得擅自改造、維修；若發現資產系非正常損耗導致的損毀，則保管人應承擔相應的維修、更換等費用；若保管人惡意損毀上述資產，則除承擔相應的維修、更換等費用外，還需按照資產的購入價格向公司支付違約金。
+          </p>
+          <p>
+            4、保管人在保管上述資產期間需無條件配合公司部門進行資產清查盤點工作，按照相關部門的要求進行盤點；若保管人在保管期間遺失上述資產，則保管人需按照上述資產的購入價格向公司支付相應款項以賠償公司損失。
+          </p>
+          <p>
+            5、保管人確認簽署本切結書則保管人已經持有上述資產，本切結書自簽訂之日起生效，保管期限自本切結書籤訂之日起起算；若保管人實際持有上述資產時間早於簽訂之日的，則本切結書自保管人實際持有上述資產之日起生效，保管期限自實際持有上述資產之日起起算。
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" style="padding-top: 30px">
+          保管人（主管）：<span class="signName"
+            >{{ $sectionIndex.Params.principal.name }}</span
+          >
+        </td>
+        <td colspan="2" style="padding-top: 30px">
+          管理員（或領用人）：<span class="signName"
+            >{{ $sectionIndex.Params.deviceManager.name }}</span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5" align="center" style="padding-top: 16px"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="btn-group">
+  <button id="btnPdf">另存為.Pdf</button>
+  <button id="rmSign">移除名字</button>
+</div>
+
+<script>
+  // import { departmentData, memberData } from './data.js'
+  const datas = [
+    {
+      id: 101,
+      name: "王總",
+      empId: "M001",
+      email: "wang.zong@company.com",
+      job: "總經理核准",
+    },
+    {
+      id: 102,
+      name: "徐洪涛",
+      empId: "F1338240",
+      email: "chen.sa@company.com",
+      job: "資安常委核准",
+    },
+    {
+      id: 103,
+      name: "陈世明",
+      empId: "F1651159",
+      email: "liu.it@company.com",
+      job: "IT主管核准",
+    },
+    {
+      id: 103,
+      name: "赵刚",
+      empId: "F1396100",
+      email: "liu.it@company.com",
+      job: "IT主管核准",
+    },
+    {
+      id: 105,
+      name: "吴凯忠",
+      empId: "F1396030",
+      email: "li.asset@company.com",
+      job: "資產管理員",
+    },
+    {
+      id: 105,
+      name: "张明杰",
+      empId: "F1339884",
+      email: "li.asset@company.com",
+      job: "資產管理員",
+    },
+  ];
+
+  const docRef = document.querySelector("#docRef");
+  const exportPdf = document.querySelector("#btnPdf");
+  const rmSign = document.getElementById("rmSign");
+
+  rmSign.addEventListener("click", function () {
+    const signNameList = document.getElementsByClassName("signName");
+    // 转为数组循环
+    for (let i = 0; i < signNameList.length; i++) {
+      const el = signNameList[i];
+      if (el.style.display === "none") {
+        el.style.display = "block";
+      } else {
+        el.style.display = "none";
+      }
+    }
+  });
+
+  // 打印PDF，仅打印#docRef，打印时按钮自动隐藏
+  exportPdf.addEventListener("click", function () {
+    console.log(datas);
+    alert("暂无资产数据，无法导出！");
+    window.print();
+  });
+</script>
+
+<style>
+  #docRef {
+    max-width: 980px;
+    margin: 24px auto;
+    padding: 20px;
+  }
+  #docRef p {
+    line-height: 1.75;
+  }
+  .signName {
+    color: rgb(255, 153, 0);
+  }
+  .btn-group {
+    max-width: 980px;
+    margin: 0 auto 16px;
+    padding: 0 20px;
+  }
+  button {
+    padding: 6px 12px;
+  }
+
+  th,
+  td {
+    border: 1px solid #222;
+    padding: 8px;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  /* =========打印PDF媒体查询========= */
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    /* 只打印docRef元素内容 */
+    #docRef,
+    #docRef * {
+      visibility: visible;
+    }
+    #docRef {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 0;
+      max-width: unset;
+      margin: 0;
+    }
+    .btn-group {
+      display: none !important;
+    }
+    @page {
+      size: A4;
+      margin: 16mm;
+    }
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 14px;
+      margin: 4px 0;
+    }
+  }
+</style>

@@ -1,0 +1,140 @@
+{{/* 本partial依赖页面引入Tailwind CSS */}}
+{{ $sectionIndex := .Site.GetPage "section" "pages" }}
+
+
+<div class="form-wrap p-4" id="docRef2">
+  <h2 class="title text-center text-2xl mb-5 tracking-wider">資產領用申請單V1.4</h2>
+
+  <div id="printWrap">
+    <table class="doc-table w-full border-collapse border border-[#274b73] text-black text-sm">
+      <tbody>
+        <!-- 第一行：工號、部門主管姓名、資位 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">工號</td>
+          <td id="f_empId" class="border border-[#274b73] align-middle p-2">{{ $sectionIndex.Params.principal.empId }}</td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">姓名</td>
+          <td id="f_name" class="border border-[#274b73] align-middle p-2">{{ $sectionIndex.Params.principal.name }}</td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資位</td>
+          <td id="f_level" class="border border-[#274b73] align-middle p-2">{{ $sectionIndex.Params.principal.level }}</td>
+        </tr>
+        <!-- 第二行：申請部門、申請日期 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">申請部門</td>
+          <td id="f_deptName" class="border border-[#274b73] align-middle p-2">{{ $sectionIndex.Params.department.deptName }}</td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">申請日期</td>
+          <td colspan="3" id="f_applyDate" class="border border-[#274b73] align-middle p-2"></td>
+        </tr>
+        <!-- 第三行：資產編號、資產名稱 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產編號</td>
+          <td id="wrap_sn" class="border border-[#274b73] align-middle p-2"></td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產名稱</td>
+          <td colspan="3" id="wrap_type" class="border border-[#274b73] align-middle p-2"></td>
+        </tr>
+        <!-- 第四行：品牌型號、數量 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">品牌/型號</td>
+          <td id="wrap_model" class="border border-[#274b73] align-middle p-2"></td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">數量</td>
+          <td colspan="3" class="text-center border border-[#274b73] align-middle p-2"><span id="f_count"></span> / 台</td>
+        </tr>
+        <!-- 第五行：資產是否有預算 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產是否有預算</td>
+          <td colspan="5" id="f_hasBudget" class="border border-[#274b73] align-middle p-2"></td>
+        </tr>
+        <!-- 配置資訊 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">配置資訊</td>
+          <td colspan="5" id="f_configInfo" class="border border-[#274b73] align-middle p-2">
+CPU: i5‑1335U 內存:16GB DDR4 3200MHz 硬碟:512GB SSD 顯卡:集顯 尺寸:14寸‑14.3寸
+          </td>
+        </tr>
+        <!-- 領用原因 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用原因</td>
+          <td colspan="5" id="f_reason" class="border border-[#274b73] align-middle p-2"><span class="rmSign"></span></td>
+        </tr>
+        <!-- 廠區/樓棟 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">廠區/樓棟</td>
+          <td colspan="5" id="f_location" class="border border-[#274b73] align-middle p-2"><span class="rmSign"></span></td>
+        </tr>
+        <!-- 總經理核准 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">總經理核准</td>
+          <td colspan="5" id="f_managerApprove" class="border border-[#274b73] align-middle p-2"><span class="rmSign"></span></td>
+        </tr>
+        <!-- 審批行 雙欄 -->
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資安常委核准</td>
+          <td id="f_securityApprove" class="border border-[#274b73] align-middle p-2"><span class="signName">徐洪涛</span></td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">IT主管核准</td>
+          <td colspan="3" id="f_itApprove" class="border border-[#274b73] align-middle p-2"><span class="signName">陈世明 赵刚</span></td>
+        </tr>
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">部門主管核准</td>
+          <td id="f_deptLeaderApprove" class="border border-[#274b73] align-middle p-2"><span class="signName">{{ $sectionIndex.Params.principal.name }}</span></td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產管理員</td>
+          <td colspan="3" id="f_assetAdmin" class="border border-[#274b73] align-middle p-2"><span class="signName">吴凯忠 张明杰</span></td>
+        </tr>
+        <tr>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用人</td>
+          <td id="f_receiverName" class="border border-[#274b73] align-middle p-2"><span class="signName">管理员姓名</span></td>
+          <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用時間</td>
+          <td colspan="3" id="f_receiveTime" class="border border-[#274b73] align-middle p-2"><span class="signName"></span></td>
+        </tr>
+
+        <tr>
+          <td colspan="6" style="padding:2rem;">
+              <p>注：1、電腦資產為公司所有，請妥善保管。如因個人原因丟失或者損壞，損失由個人承擔。</p>
+              <p>2、公司資產僅用於工作，禁止處理個人事務；未經允許禁止轉借他人。</p>
+              <p>3、嚴禁私自拆卸電腦或增加配件，如有需要請聯絡IT人員。</p>
+              <p>4、電腦作業系統及軟體由公司統一安裝，禁止私自安裝作業系統、解除安裝或安裝軟體，如有需要請聯絡IT人員。</p>
+              <p>5、員工離職或者轉調其他事業群，請及時歸還資產至Fii資訊總處。</p>
+              <p>6、師八以下人員申領筆記型電腦，需總經理批准後，方可領取。</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="btn-group mt-5 print:hidden">
+    <button id="btnPdf" class="px-4 py-2 border border-gray‑400 rounded bg-white cursor-pointer" onclick="exportPdf()">存為PDF</button>
+    <button id="btnPdf" class="px-4 py-2 border border-gray‑400 rounded bg-white cursor-pointer" onclick="rmSign()">移除签名</button>
+  </div>
+</div>
+
+<script>
+
+
+ function rmSign() {
+  const signNameList = document.getElementsByClassName('signName');
+  // 转为数组循环
+  for (let i = 0; i < signNameList.length; i++) {
+    const el = signNameList[i];
+    if (el.style.display === 'none') {
+      el.style.display = 'inline';
+    } else {
+      el.style.display = 'none';
+    }
+  }
+};
+
+function exportPdf() {
+  window.print();
+}
+</script>
+<style>
+#docRef2 {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 20px;
+}
+#docRef2 p{
+  line-height: 1.75;
+}
+.signName{
+  color:red;
+}
+</style>

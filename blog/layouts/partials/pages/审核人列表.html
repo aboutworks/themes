@@ -1,0 +1,83 @@
+{{ $sectionIndex := .Site.GetPage "section" "pages" }}
+
+<div id="remindString"></div>
+<h2>审核人列表</h2>
+{{ if .Params.approverList }}
+<table class="w-full border-collapse text-sm">
+  <thead>
+    <tr>
+      <th class="border border-[#274b73] p-2 text-left">角色</th>
+      <th class="border border-[#274b73] p-2 text-left">姓名</th>
+      <th class="border border-[#274b73] p-2 text-left">工號</th>
+      <th class="border border-[#274b73] p-2 text-left">邮箱</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ range .Params.approverList }}
+    <tr class="hover:bg-slate-100 transition-colors">
+      <td class="border border-[#274b73] p-2">{{ .job }}</td>
+      <td class="border border-[#274b73] p-2" onclick="copyText('{{ .name }}')">
+        {{ .name }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ .empId }}')">
+        {{ .empId }}
+      </td>
+      <td class="border border-[#274b73] p-2" onclick="copyText('{{ .email }}')">
+        {{ .email }}
+        {{ if .email }}
+        {{ end }}
+      </td>
+    </tr>
+  {{ end }}
+  </tbody>
+</table>
+{{ else }}
+<div class="text-gray-500">無審批人員</div>
+{{ end }}
+
+<h2>设备归属列表</h2>
+{{ if .Params.assignmentList }}
+<table class="w-full border-collapse text-sm">
+  <thead>
+    <tr>
+      <th class="border border-[#274b73] p-2 text-left">设备编号</th>
+      <th class="border border-[#274b73] p-2 text-left">姓名</th>
+      <th class="border border-[#274b73] p-2 text-left">工號</th>
+      <th class="border border-[#274b73] p-2 text-left">邮箱</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ range .Params.assignmentList }}
+    <tr class="hover:bg-slate-100 transition-colors">
+      <td class="border border-[#274b73] p-2">{{ .sn }}</td>
+      <td class="border border-[#274b73] p-2" onclick="copyText('{{ .name }}')">
+        {{ .name }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ .empId }}')">
+        {{ .empId }}
+      </td>
+      <td class="border border-[#274b73] p-2" onclick="copyText('{{ .email }}')">
+        {{ .email }}
+        {{ if .email }}
+        {{ end }}
+      </td>
+    </tr>
+  {{ end }}
+  </tbody>
+</table>
+{{ else }}
+<div class="text-gray-500">無審批人員</div>
+{{ end }}
+
+<script>
+function copyText(text) {
+  navigator.clipboard.writeText(text)
+    .then(function () {
+      const string = `已複製：${text}`;
+      document.getElementById('remindString').innerHTML = string
+    })
+    .catch(function (err) {
+      console.error("複製失敗", err);
+    });
+}
+</script>

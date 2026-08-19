@@ -1,0 +1,55 @@
+{{ define "main" }}
+<main class="page-container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{ with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{ end }}
+  </header>
+
+  <div class="page-content">
+    {{/* 如果frontmatter配置partialTpl，优先渲染组件partial */}} {{ if
+    .Params.partialTpl }} {{ partial .Params.partialTpl . }} {{ else }} {{/*
+    普通markdown文章渲染 */}}
+    <div class="markdown-body">{{ .Content }}</div>
+    {{ end }}
+  </div>
+</main>
+
+<style>
+  .page-container {
+    max-width: 1024px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+  .page-title {
+    font-size: 28px;
+    margin: 0;
+  }
+  .page-subtitle {
+    color: #666;
+  }
+  .markdown-body {
+    line-height: 1.7;
+  }
+
+  /* 打印：页面容器重置，适配表单PDF输出 */
+  @media print {
+    .page-container {
+      max-width: unset;
+      margin: 0;
+      padding: 0;
+    }
+    .page-header {
+      display: none;
+    }
+    @page {
+      size: A4;
+      margin: 15mm;
+    }
+  }
+</style>
+{{ end }}

@@ -1,0 +1,11 @@
+{{ define "main" }} {{ template "layout/header.html" . }}
+<main class="max-w-7xl mx-auto mb-4 mt-4 p-4">
+  <ul>
+    {{ range .Pages }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </li>
+    {{ end }}
+  </ul>
+</main>
+{{ template "layout/footer.html" . }} {{ end }}
