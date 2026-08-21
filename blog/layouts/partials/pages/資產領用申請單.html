@@ -22,43 +22,62 @@
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">申請部門</td>
           <td id="f_deptName" class="border border-[#274b73] align-middle p-2">{{ $sectionIndex.Params.department.deptName }}</td>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">申請日期</td>
-          <td colspan="3" id="f_applyDate" class="border border-[#274b73] align-middle p-2"></td>
+          <td colspan="3" id="f_applyDate" class="border border-[#274b73] align-middle p-2">
+           {{ now.Format "2006-01-02" }}
+          </td>
         </tr>
         <!-- 第三行：資產編號、資產名稱 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產編號</td>
-          <td id="wrap_sn" class="border border-[#274b73] align-middle p-2"></td>
+          <td id="wrap_sn" class="border border-[#274b73] align-middle p-2">
+{{ range .Params.assignmentList }}
+    {{ .sn }},
+{{ end }}
+          </td>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產名稱</td>
-          <td colspan="3" id="wrap_type" class="border border-[#274b73] align-middle p-2"></td>
+          <td colspan="3" id="wrap_type" class="border border-[#274b73] align-middle p-2">
+{{ $types := apply .Params.assignmentList "index" "." "type" }}
+{{ $uniqueTypes := uniq $types }}
+{{ range $uniqueTypes }}
+    {{ . }}
+{{ end }}
+          </td>
         </tr>
         <!-- 第四行：品牌型號、數量 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">品牌/型號</td>
-          <td id="wrap_model" class="border border-[#274b73] align-middle p-2"></td>
+          <td id="wrap_model" class="border border-[#274b73] align-middle p-2">
+
+{{ $model := apply .Params.assignmentList "index" "." "model" }}
+{{ $uniqueTypes := uniq $model }}
+{{ range $uniqueTypes }}
+    {{ . }}
+{{ end }}
+          </td>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">數量</td>
-          <td colspan="3" class="text-center border border-[#274b73] align-middle p-2"><span id="f_count"></span> / 台</td>
+          <td colspan="3" class="text-center border border-[#274b73] align-middle p-2"><span id="f_count"></span>
+           {{ len .Params.assignmentList }}
+             / 台</td>
         </tr>
         <!-- 第五行：資產是否有預算 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">資產是否有預算</td>
-          <td colspan="5" id="f_hasBudget" class="border border-[#274b73] align-middle p-2"></td>
+          <td colspan="5" id="f_hasBudget" class="border border-[#274b73] align-middle p-2">是</td>
         </tr>
         <!-- 配置資訊 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">配置資訊</td>
-          <td colspan="5" id="f_configInfo" class="border border-[#274b73] align-middle p-2">
-CPU: i5‑1335U 內存:16GB DDR4 3200MHz 硬碟:512GB SSD 顯卡:集顯 尺寸:14寸‑14.3寸
-          </td>
+          <td colspan="5" id="f_configInfo" class="border border-[#274b73] align-middle p-2"> {{ .Params.config }} </td>
         </tr>
         <!-- 領用原因 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用原因</td>
-          <td colspan="5" id="f_reason" class="border border-[#274b73] align-middle p-2"><span class="rmSign"></span></td>
+          <td colspan="5" id="f_reason" class="border border-[#274b73] align-middle p-2"> {{ .Params.reason }}</td>
         </tr>
         <!-- 廠區/樓棟 -->
         <tr>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">廠區/樓棟</td>
-          <td colspan="5" id="f_location" class="border border-[#274b73] align-middle p-2"><span class="rmSign"></span></td>
+          <td colspan="5" id="f_location" class="border border-[#274b73] align-middle p-2">{{ .Params.localtion }}</td>
         </tr>
         <!-- 總經理核准 -->
         <tr>
