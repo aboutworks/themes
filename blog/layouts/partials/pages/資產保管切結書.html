@@ -1,179 +1,426 @@
-{{ $sectionIndex := .Site.GetPage "section" "pages" }} {{
-$sectionIndex.Params.department }}
+{{/* 顶部只定义一次，避免重复执行 */}}
+{{ $sectionIndex := .Site.GetPage "section" "pages" }}
 
-<div class="doc-wrap" id="docRef">
-  <h2 style="text-align: center; font-size: 24px; margin-bottom: 16px">
-    資產保管切結書
-  </h2>
-  <table style="border-collapse: collapse; width: 100%">
-    <tbody>
-      <tr>
-        <td colspan="5" align="center"><strong>保管人資訊</strong></td>
-      </tr>
-      <tr>
-        <th>姓名</th>
-        <th>工號</th>
-        <th>郵箱</th>
-        <th>座機</th>
-        <th>手機</th>
-      </tr>
-      <tr>
-        <td>{{ $sectionIndex.Params.principal.name }}</td>
-        <td>{{ $sectionIndex.Params.principal.empId }}</td>
-        <td>{{ $sectionIndex.Params.principal.email }}</td>
-        <td>{{ $sectionIndex.Params.principal.telphone }}</td>
-        <td>{{ $sectionIndex.Params.principal.phone }}</td>
-      </tr>
-      <tr>
-        <td colspan="5" align="center"><strong>資產資訊</strong></td>
-      </tr>
-      <tr>
-        <th>序號</th>
-        <th>姓名/工號</th>
-        <th>型號</th>
-        <th>管制編號/SN</th>
-        <th>所屬法人</th>
-      </tr>
+{{/* 整套单据统一外层打印容器 */}}
+<div id="fullPdfWrap">
+  {{/* ========== 資產保管切結書 ========== */}}
+  <div class="doc-wrap" id="docRef">
+    <h2 style="text-align: center; font-size: 24px; margin-bottom: 16px">
+      資產保管切結書
+    </h2>
+    <table style="border-collapse: collapse; width: 100%">
+      <tbody>
+        <tr>
+          <td colspan="5" align="center"><strong>保管人資訊</strong></td>
+        </tr>
+        <tr>
+          <th>姓名</th>
+          <th>工號</th>
+          <th>郵箱</th>
+          <th>座機</th>
+          <th>手機</th>
+        </tr>
+        <tr>
+          <td>{{ $sectionIndex.Params.principal.name }}</td>
+          <td>{{ $sectionIndex.Params.principal.empId }}</td>
+          <td>{{ $sectionIndex.Params.principal.email }}</td>
+          <td>{{ $sectionIndex.Params.principal.telphone }}</td>
+          <td>{{ $sectionIndex.Params.principal.phone }}</td>
+        </tr>
+        <tr>
+          <td colspan="5" align="center"><strong>資產資訊</strong></td>
+        </tr>
+        <tr>
+          <th>序號</th>
+          <th>姓名/工號</th>
+          <th>型號</th>
+          <th>管制編號/SN</th>
+          <th>所屬法人</th>
+        </tr>
+        {{ range .Params.assignmentList }}
+        <tr>
+          <td>{{.id}}</td>
+          <td>{{.name}}/{{.empId}}</td>
+          <td>{{.model}}</td>
+          <td>{{.sn}}</td>
+          <td>{{ $sectionIndex.Params.department.legalentity }}</td>
+        </tr>
+        {{end}}
+      </tbody>
+      <tbody id="assetTbody"></tbody>
+      <tbody>
+        <tr id="emptyRow" style="display: none">
+          <td colspan="5" align="center">暫無資產資料</td>
+        </tr>
+        <tr>
+          <td colspan="5" align="center"><strong>保管事項</strong></td>
+        </tr>
+        <tr>
+          <td colspan="5" style="padding: 2rem">
+            <p>
+              1、保管人因工作需要使用公司（下稱“公司”）的上述資產，在使用期間保管人自願承擔對上述資產的保管義務，保管期限至公司收回該資產之日止。
+            </p>
+            <p>
+              2、保管人對上述資產僅享有非獨佔、不可轉讓的使用權，所有權等其他權利均屬於公司，在保管人離職、調崗或公司認為需收回的情況下公司有權收回上述資產，保管人需無條件在公司發出收回通知當日將上述資產交還公司。
+            </p>
+            <p>
+              3、保管人在保管上述資產期間需正常、合理使用上述資產，保證資產完好，充分發揮資產效用，若資產出現毀損，應按照相關規定上報處理，不得擅自改造、維修；若發現資產系非正常損耗導致的損毀，則保管人應承擔相應的維修、更換等費用；若保管人惡意損毀上述資產，則除承擔相應的維修、更換等費用外，還需按照資產的購入價格向公司支付違約金。
+            </p>
+            <p>
+              4、保管人在保管上述資產期間需無條件配合公司部門進行資產清查盤點工作，按照相關部門的要求進行盤點；若保管人在保管期間遺失上述資產，則保管人需按照上述資產的購入價格向公司支付相應款項以賠償公司損失。
+            </p>
+            <p>
+              5、保管人確認簽署本切結書則保管人已經持有上述資產，本切結書自簽訂之日起生效，保管期限自本切結書籤訂之日起起算；若保管人實際持有上述資產時間早於簽訂之日的，則本切結書自保管人實際持有上述資產之日起生效，保管期限自實際持有上述資產之日起起算。
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="padding-top: 30px">
+            保管人（主管）：<span class="signName"
+              >{{ $sectionIndex.Params.principal.name }}</span
+            >
+          </td>
+          <td colspan="2" style="padding-top: 30px">
+            管理員（或領用人）：<span class="signName"
+              >{{ $sectionIndex.Params.deviceManager.name }}</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-      {{ range .Params.assignmentList }}
-      <tr>
-        <td>{{.id}}</td>
-        <td>{{.name}}/{{.empId}}</td>
-        <td>{{.model}}</td>
-        <td>{{.sn}}</td>
-        <td>{{ $sectionIndex.Params.department.legalentity }}</td>
-      </tr>
-      {{end}}
-    </tbody>
-    <tbody id="assetTbody"></tbody>
-    <tbody>
-      <tr id="emptyRow" style="display: none">
-        <td colspan="5" align="center">暫無資產資料</td>
-      </tr>
-      <tr>
-        <td colspan="5" align="center"><strong>保管事項</strong></td>
-      </tr>
-      <tr>
-        <td colspan="5" style="padding: 2rem">
-          <p>
-            1、保管人因工作需要使用公司（下稱“公司”）的上述資產，在使用期間保管人自願承擔對上述資產的保管義務，保管期限至公司收回該資產之日止。
-          </p>
-          <p>
-            2、保管人對上述資產僅享有非獨佔、不可轉讓的使用權，所有權等其他權利均屬於公司，在保管人離職、調崗或公司認為需收回的情況下公司有權收回上述資產，保管人需無條件在公司發出收回通知當日將上述資產交還公司。
-          </p>
-          <p>
-            3、保管人在保管上述資產期間需正常、合理使用上述資產，保證資產完好，充分發揮資產效用，若資產出現毀損，應按照相關規定上報處理，不得擅自改造、維修；若發現資產系非正常損耗導致的損毀，則保管人應承擔相應的維修、更換等費用；若保管人惡意損毀上述資產，則除承擔相應的維修、更換等費用外，還需按照資產的購入價格向公司支付違約金。
-          </p>
-          <p>
-            4、保管人在保管上述資產期間需無條件配合公司部門進行資產清查盤點工作，按照相關部門的要求進行盤點；若保管人在保管期間遺失上述資產，則保管人需按照上述資產的購入價格向公司支付相應款項以賠償公司損失。
-          </p>
-          <p>
-            5、保管人確認簽署本切結書則保管人已經持有上述資產，本切結書自簽訂之日起生效，保管期限自本切結書籤訂之日起起算；若保管人實際持有上述資產時間早於簽訂之日的，則本切結書自保管人實際持有上述資產之日起生效，保管期限自實際持有上述資產之日起起算。
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3" style="padding-top: 30px">
-          保管人（主管）：<span class="signName"
-            >{{ $sectionIndex.Params.principal.name }}</span
-          >
-        </td>
-        <td colspan="2" style="padding-top: 30px">
-          管理員（或領用人）：<span class="signName"
-            >{{ $sectionIndex.Params.deviceManager.name }}</span
-          >
-        </td>
-      </tr>
-      <tr>
-        <td colspan="5" align="center" style="padding-top: 16px"></td>
-      </tr>
-    </tbody>
-  </table>
+  {{/* 強制分頁：切結書、申請單各一張A4 */}}
+  <div style="page-break-after: always;"></div>
+
+  {{/* ========== 資產領用申請單V1.4 ========== */}}
+  <div class="form-wrap p-4" id="docRef2">
+    <h2 class="title text-center text-2xl mb-5 tracking-wider">
+      資產領用申請單V1.4
+    </h2>
+    <div id="printWrap">
+      <table
+        class="doc-table w-full border-collapse border border-[#274b73] text-black text-sm"
+      >
+        <tbody>
+          <!-- 第一行：工號、部門主管姓名、資位 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              工號
+            </td>
+            <td id="f_empId" class="border border-[#274b73] align-middle p-2">
+              {{ $sectionIndex.Params.principal.empId }}
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              姓名
+            </td>
+            <td id="f_name" class="border border-[#274b73] align-middle p-2">
+              {{ $sectionIndex.Params.principal.name }}
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資位
+            </td>
+            <td id="f_level" class="border border-[#274b73] align-middle p-2">
+              {{ $sectionIndex.Params.principal.level }}
+            </td>
+          </tr>
+          <!-- 第二行：申請部門、申請日期 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              申請部門
+            </td>
+            <td id="f_deptName" class="border border-[#274b73] align-middle p-2">
+              {{ $sectionIndex.Params.department.deptName }}
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              申請日期
+            </td>
+            <td
+              colspan="3"
+              id="f_applyDate"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ now.Format "2006-01-02" }}
+            </td>
+          </tr>
+          <!-- 第三行：資產編號、資產名稱 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資產編號
+            </td>
+            <td id="wrap_sn" class="border border-[#274b73] align-middle p-2">
+              {{ range .Params.assignmentList }} {{ .sn }}, {{ end }}
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資產名稱
+            </td>
+            <td
+              colspan="3"
+              id="wrap_type"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ $types := apply .Params.assignmentList "index" "." "type" }}
+              {{ $uniqueTypes := uniq $types }}
+              {{ range $uniqueTypes }} {{ . }} {{ end }}
+            </td>
+          </tr>
+          <!-- 第四行：品牌型號、數量 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              品牌/型號
+            </td>
+            <td id="wrap_model" class="border border-[#274b73] align-middle p-2">
+              {{ $model := apply .Params.assignmentList "index" "." "model" }}
+              {{ $uniqueModel := uniq $model }}
+              {{ range $uniqueModel }} {{ . }} {{ end }}
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              數量
+            </td>
+            <td
+              colspan="3"
+              class="text-center border border-[#274b73] align-middle p-2"
+            >
+              <span id="f_count"></span> {{ len .Params.assignmentList }} / 台
+            </td>
+          </tr>
+          <!-- 第五行：資產是否有預算 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資產是否有預算
+            </td>
+            <td
+              colspan="5"
+              id="f_hasBudget"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              是
+            </td>
+          </tr>
+          <!-- 配置資訊 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              配置資訊
+            </td>
+            <td
+              colspan="5"
+              id="f_configInfo"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ .Params.config }}
+            </td>
+          </tr>
+          <!-- 領用原因 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              領用原因
+            </td>
+            <td
+              colspan="5"
+              id="f_reason"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ .Params.reason }}
+            </td>
+          </tr>
+          <!-- 廠區/樓棟 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              廠區/樓棟
+            </td>
+            <td
+              colspan="5"
+              id="f_location"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ .Params.localtion }}
+            </td>
+          </tr>
+          <!-- 總經理核准 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              總經理核准
+            </td>
+            <td
+              colspan="5"
+              id="f_managerApprove"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName"></span>
+            </td>
+          </tr>
+          <!-- 審批行 雙欄 -->
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資安常委核准
+            </td>
+            <td
+              id="f_securityApprove"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName">徐洪涛</span>
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              IT主管核准
+            </td>
+            <td
+              colspan="3"
+              id="f_itApprove"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName">陈世明 赵刚</span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              部門主管核准
+            </td>
+            <td
+              id="f_deptLeaderApprove"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName"
+                >{{ $sectionIndex.Params.principal.name }}</span
+              >
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              資產管理員
+            </td>
+            <td
+              colspan="3"
+              id="f_assetAdmin"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName">吴凯忠 张明杰</span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              領用人
+            </td>
+            <td
+              id="f_receiverName"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              <span class="signName">管理员姓名</span>
+            </td>
+            <td
+              class="label-td border border-[#274b73] align-middle p-2 font-medium"
+            >
+              領用時間
+            </td>
+            <td
+              colspan="3"
+              id="f_receiveTime"
+              class="border border-[#274b73] align-middle p-2"
+            >
+              {{ now.Format "2006-01-02" }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6" style="padding: 2rem">
+              <p>
+                注：1、電腦資產為公司所有，請妥善保管。如因個人原因丟失或者損壞，損失由個人承擔。
+              </p>
+              <p>
+                2、公司資產僅用於工作，禁止處理個人事務；未經允許禁止轉借他人。
+              </p>
+              <p>3、嚴禁私自拆卸電腦或增加配件，如有需要請聯絡IT人員。</p>
+              <p>
+                4、電腦作業系統及軟體由公司統一安裝，禁止私自安裝作業系統、解除安裝或安裝軟體，如有需要請聯絡IT人員。
+              </p>
+              <p>5、員工離職或者轉調其他事業群，請及時歸還資產至Fii資訊總處。</p>
+              <p>6、師八以下人員申領筆記型電腦，需總經理批准後，方可領取。</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<div class="btn-group">
-  <button id="btnPdf">另存為.Pdf</button>
-  <button id="rmSign">移除名字</button>
+
+{{/* 全局操作按鈕（只保留一組，不再重複） */}}
+<div class="btn-group mt-5">
+  <button id="btnExportPdf" class="px-4 py-2 border border-gray‑400 rounded bg-white cursor-pointer">
+    存為PDF
+  </button>
+  <button id="btnRemoveSign" class="px-4 py-2 border border-gray‑400 rounded bg-white cursor-pointer">
+    移除/恢復簽名
+  </button>
 </div>
 
 <script>
-  // import { departmentData, memberData } from './data.js'
-  const datas = [
-    {
-      id: 101,
-      name: "王總",
-      empId: "M001",
-      email: "wang.zong@company.com",
-      job: "總經理核准",
-    },
-    {
-      id: 102,
-      name: "徐洪涛",
-      empId: "F1338240",
-      email: "chen.sa@company.com",
-      job: "資安常委核准",
-    },
-    {
-      id: 103,
-      name: "陈世明",
-      empId: "F1651159",
-      email: "liu.it@company.com",
-      job: "IT主管核准",
-    },
-    {
-      id: 103,
-      name: "赵刚",
-      empId: "F1396100",
-      email: "liu.it@company.com",
-      job: "IT主管核准",
-    },
-    {
-      id: 105,
-      name: "吴凯忠",
-      empId: "F1396030",
-      email: "li.asset@company.com",
-      job: "資產管理員",
-    },
-    {
-      id: 105,
-      name: "张明杰",
-      empId: "F1339884",
-      email: "li.asset@company.com",
-      job: "資產管理員",
-    },
-  ];
-
-  const docRef = document.querySelector("#docRef");
-  const exportPdf = document.querySelector("#btnPdf");
-  const rmSign = document.getElementById("rmSign");
-
-  rmSign.addEventListener("click", function () {
+  // 全局函數，直接掛載window，避免 onclick not defined
+  window.removeSign = function () {
     const signNameList = document.getElementsByClassName("signName");
-    // 转为数组循环
     for (let i = 0; i < signNameList.length; i++) {
       const el = signNameList[i];
-      if (el.style.display === "none") {
-        el.style.display = "block";
-      } else {
-        el.style.display = "none";
-      }
+      el.style.display = el.style.display === "none" ? "inline" : "none";
     }
+  }
+  window.exportPdf = function () {
+    window.print();
+  }
+
+  // DOM載入完成綁定按鈕事件（addEventListener方案，雙兼容）
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnExport = document.querySelector("#btnExportPdf");
+    const btnRmSign = document.querySelector("#btnRemoveSign");
+    if(btnExport) btnExport.addEventListener("click", exportPdf);
+    if(btnRmSign) btnRmSign.addEventListener("click", removeSign);
   });
 
-  // 打印PDF，仅打印#docRef，打印时按钮自动隐藏
-  exportPdf.addEventListener("click", function () {
-    console.log(datas);
-    alert("暂无资产数据，无法导出！");
-    window.print();
-  });
 </script>
 
 <style>
-  #docRef {
+  body{
+    font-size:12px;
+  }
+  /* 頁面通用樣式 */
+  #docRef, #docRef2 {
     max-width: 980px;
     margin: 24px auto;
     padding: 20px;
   }
-  #docRef p {
+  #docRef p, #docRef2 p {
     line-height: 1.75;
   }
   .signName {
@@ -186,10 +433,9 @@ $sectionIndex.Params.department }}
   }
   button {
     padding: 6px 12px;
+    cursor: pointer;
   }
-
-  th,
-  td {
+  th, td {
     border: 1px solid #222;
     padding: 8px;
     vertical-align: middle;
@@ -200,24 +446,21 @@ $sectionIndex.Params.department }}
     width: 100%;
   }
 
-  /* =========打印PDF媒体查询========= */
+  /* ========== 打印樣式【支援兩張單據完整打印】 ========== */
   @media print {
     body * {
       visibility: hidden;
     }
-    /* 只打印docRef元素内容 */
-    #docRef,
-    #docRef * {
+    #fullPdfWrap, #fullPdfWrap * {
       visibility: visible;
     }
-    #docRef {
+    #fullPdfWrap {
       position: absolute;
       left: 0;
       top: 0;
       width: 100%;
-      padding: 0;
-      max-width: unset;
       margin: 0;
+      padding:0;
     }
     .btn-group {
       display: none !important;
@@ -225,15 +468,6 @@ $sectionIndex.Params.department }}
     @page {
       size: A4;
       margin: 16mm;
-    }
-    h2 {
-      text-align: center;
-      font-size: 24px;
-      margin-bottom: 16px;
-    }
-    p {
-      font-size: 14px;
-      margin: 4px 0;
     }
   }
 </style>
