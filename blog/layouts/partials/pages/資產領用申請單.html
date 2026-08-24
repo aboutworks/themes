@@ -101,7 +101,7 @@
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用人</td>
           <td id="f_receiverName" class="border border-[#274b73] align-middle p-2"><span class="signName">管理员姓名</span></td>
           <td class="label-td border border-[#274b73] align-middle p-2 font-medium">領用時間</td>
-          <td colspan="3" id="f_receiveTime" class="border border-[#274b73] align-middle p-2"><span class="signName"></span></td>
+          <td colspan="3" id="f_receiveTime" class="border border-[#274b73] align-middle p-2">{{ now.Format "2006-01-02" }}</td>
         </tr>
 
         <tr>
@@ -156,4 +156,5 @@ function exportPdf() {
 .signName{
   color:red;
 }
+
 </style>

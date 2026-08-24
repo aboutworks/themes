@@ -1,6 +1,90 @@
-{{ $sectionIndex := .Site.GetPage "section" "pages" }}
 
+{{ $sectionDepart := .Site.GetPage "section" "pages" }}
+{{ if $sectionDepart.Params.department }}
 <div id="remindString"></div>
+<h2>审核人列表</h2>
+<table class="w-full border-collapse text-sm">
+  <thead>
+    <tr>
+      <th class="border border-[#274b73] p-2 text-left">角色</th>
+      <th class="border border-[#274b73] p-2 text-left">部门</th>
+      <th class="border border-[#274b73] p-2 text-left">法人</th>
+      <th class="border border-[#274b73] p-2 text-left">原因</th>
+      <th class="border border-[#274b73] p-2 text-left">地置</th>
+      <th class="border border-[#274b73] p-2 text-left">代码</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ $p := $sectionDepart.Params.department }}
+    <tr class="hover:bg-slate-100 transition-colors">
+      <td class="border border-[#274b73] p-2">負責人</td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.deptName }}')">
+        {{ $p.deptName }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.legalEntity }}')">
+        {{ $p.legalEntity }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.reason }}')">
+        {{ $p.reason }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.location }}')">
+        {{ $p.location }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.costCode }}')">
+        {{ $p.costCode }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{{ else }}
+<div class="text-gray-500">無審批人員</div>
+{{ end }}
+
+
+
+{{ $sectionIndex := .Site.GetPage "section" "pages" }}
+{{ if $sectionIndex.Params.principal }}
+<div id="remindString"></div>
+<h2>审核人列表</h2>
+<table class="w-full border-collapse text-sm">
+  <thead>
+    <tr>
+      <th class="border border-[#274b73] p-2 text-left">角色</th>
+      <th class="border border-[#274b73] p-2 text-left">姓名</th>
+      <th class="border border-[#274b73] p-2 text-left">工號</th>
+      <th class="border border-[#274b73] p-2 text-left">邮箱</th>
+      <th class="border border-[#274b73] p-2 text-left">座机</th>
+      <th class="border border-[#274b73] p-2 text-left">手机</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ $p := $sectionIndex.Params.principal }}
+    <tr class="hover:bg-slate-100 transition-colors">
+      <td class="border border-[#274b73] p-2">負責人</td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.name }}')">
+        {{ $p.name }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.empId }}')">
+        {{ $p.empId }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.email }}')">
+        {{ $p.email }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.telphone }}')">
+        {{ $p.telphone }}
+      </td>
+      <td class="border border-[#274b73] p-2 cursor-pointer" onclick="copyText('{{ $p.phone }}')">
+        {{ $p.phone }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{{ else }}
+<div class="text-gray-500">無審批人員</div>
+{{ end }}
+
+
+
 <h2>审核人列表</h2>
 {{ if .Params.approverList }}
 <table class="w-full border-collapse text-sm">
